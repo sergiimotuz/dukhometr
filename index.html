@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Духометр - православний духовний щоденник з голосовим AI-наставником. Веди записи, отримуй мудрість святих отців, спілкуйся голосом.">
+    <meta name="keywords" content="православ'я, духовний щоденник, молитва, святі отці, духовний наставник, українська православна церква">
+    <meta name="author" content="Духометр">
+    <meta property="og:title" content="Духометр - Православний духовний щоденник">
+    <meta property="og:description" content="Твій особистий православний духовний помічник з AI-наставником та голосовою взаємодією">
+    <meta property="og:type" content="website">
+    <meta name="theme-color" content="#7c3aed">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Духометр">
+    <title>Духометр - Православний духовний щоденник з AI-наставником</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>☦️</text></svg>">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .glass {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        .spiritual-gradient {
+            background: linear-gradient(135deg, #ffd89b 0%, #19547b 100%);
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .fade-in {
+            animation: fadeIn 0.3s ease-out;
+        }
+        .chart-bar {
+            transition: all 0.3s ease;
+        }
+        .chart-bar:hover {
+            transform: scaleY(1.05);
+            opacity: 0.8;
+        }
+    </style>
+</head>
+<body class="p-4">
+    <div class="max-w-4xl mx-auto">
+        <!-- Header -->
+        <div class="glass rounded-2xl shadow-2xl p-6 mb-4">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h1 class="text-3xl font-bold text-gray-800">☦️ Духометр</h1>
+                    <p class="text-gray-600">Православний шлях духовного зростання</p>
+                </div>
+                <div class="text-right">
+                    <div class="text-sm text-gray-600" id="currentDate"></div>
+                    <div class="text-2xl font-bold text-purple-600" id="dayCounter">День 1</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <div class="glass rounded-2xl shadow-2xl p-4 mb-4">
+            <div class="flex gap-2 overflow-x-auto">
+                <button onclick="showTab('journal')" id="tab-journal" class="px-4 py-2 rounded-lg bg-purple-600 text-white whitespace-nowrap">
+                    📖 Щоденник
+                </button>
+                <button onclick="showTab('ai')" id="tab-ai" class="px-4 py-2 rounded-lg hover:bg-purple-100 whitespace-nowrap">
+                    💬 Наставник
+                </button>
+                <button onclick="showTab('stats')" id="tab-stats" class="px-4 py-2 rounded-lg hover:bg-purple-100 whitespace-nowrap">
+                    📊 Статистика
+                </button>
+                <button onclick="showTab('wisdom')" id="tab-wisdom" class="px-4 py-2 rounded-lg hover:bg-purple-100 whitespace-nowrap">
+                    ✨ Мудрість Святих
+                </button>
+            </div>
+        </div>
+
+        <!-- Journal Tab -->
+        <div id="content-journal" class="tab-content">
+            <div class="glass rounded-2xl shadow-2xl p-6 mb-4">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">Сьогоднішній запис</h2>
+                
+                <!-- Good deeds -->
+                <div class="mb-6">
+                    <label class="block text-sm font-semibold text-green-700 mb-2">✅ Добрі вчинки та думки</label>
+                    <textarea id="goodDeeds" rows="4" class="w-full p-3 border-2 border-green-200 rounded-lg focus:border-green-500 focus:outline-none resize-none" placeholder="Молитва, допомога ближньому, подолання спокус..."></textarea>
+                </div>
+
+                <!-- Bad deeds -->
+                <div class="mb-6">
+                    <label class="block text-sm font-semibold text-red-700 mb-2">❌ Гріхи та падіння</label>
+                    <textarea id="badDeeds" rows="4" class="w-full p-3 border-2 border-red-200 rounded-lg focus:border-red-500 focus:outline-none resize-none" placeholder="Гнів, осуд, лінощі, марнославство..."></textarea>
+                </div>
+
+                <!-- Spiritual practices -->
+                <div class="mb-6">
+                    <label class="block text-sm font-semibold text-blue-700 mb-2">🙏 Духовні практики</label>
+                    <div class="grid grid-cols-2 gap-3">
+                        <label class="flex items-center gap-2 p-3 border-2 rounded-lg cursor-pointer hover:bg-blue-50">
+                            <input type="checkbox" class="practice-checkbox" data-practice="Ранкова молитва">
+                            <span>Ранкова молитва</span>
+                        </label>
+                        <label class="flex items-center gap-2 p-3 border-2 rounded-lg cursor-pointer hover:bg-blue-50">
+                            <input type="checkbox" class="practice-checkbox" data-practice="Вечірня молитва">
+                            <span>Вечірня молитва</span>
+                        </label>
+                        <label class="flex items-center gap-2 p-3 border-2 rounded-lg cursor-pointer hover:bg-blue-50">
+                            <input type="checkbox" class="practice-checkbox" data-practice="Читання Євангелія">
+                            <span>Читання Євангелія</span>
+                        </label>
+                        <label class="flex items-center gap-2 p-3 border-2 rounded-lg cursor-pointer hover:bg-blue-50">
+                            <input type="checkbox" class="practice-checkbox" data-practice="Ісусова молитва">
+                            <span>Ісусова молитва</span>
+                        </label>
+                        <label class="flex items-center gap-2 p-3 border-2 rounded-lg cursor-pointer hover:bg-blue-50">
+                            <input type="checkbox" class="practice-checkbox" data-practice="Піст">
+                            <span>Піст</span>
+                        </label>
+                        <label class="flex items-center gap-2 p-3 border-2 rounded-lg cursor-pointer hover:bg-blue-50">
+                            <input type="checkbox" class="practice-checkbox" data-practice="Богослужіння">
+                            <span>Богослужіння</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Personal reflection -->
+                <div class="mb-6">
+                    <label class="block text-sm font-semibold text-purple-700 mb-2">💭 Особисті роздуми</label>
+                    <textarea id="reflection" rows="3" class="w-full p-3 border-2 border-purple-200 rounded-lg focus:border-purple-500 focus:outline-none resize-none" placeholder="Що я відчуваю? Які боротьби? Що Господь відкриває мені?"></textarea>
+                </div>
+
+                <button onclick="saveEntry()" class="w-full bg-gradient-to-r from-purple-600 to-blue-600 text-white py-3 rounded-lg font-semibold hover:shadow-lg transition-all">
+                    Зберегти запис та отримати настанову
+                </button>
+            </div>
+
+            <!-- Previous entries -->
+            <div class="glass rounded-2xl shadow-2xl p-6">
+                <h3 class="text-xl font-bold text-gray-800 mb-4">Попередні записи</h3>
+                <div id="entriesHistory" class="space-y-3 max-h-96 overflow-y-auto">
+                    <p class="text-gray-500 text-center py-8">Поки що немає записів</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- AI Tab -->
+        <div id="content-ai" class="tab-content hidden">
+            <div class="glass rounded-2xl shadow-2xl p-6">
+                <div class="flex justify-between items-start mb-4">
+                    <div>
+                        <h2 class="text-2xl font-bold text-gray-800">💬 Бесіда з духовним наставником</h2>
+                        <p class="text-gray-600">Поділіться своїми духовними питаннями про молитву, гріх, смирення, піст, любов, терпіння та інше.</p>
+                    </div>
+                    <div class="flex gap-2">
+                        <button id="voiceToggle" onclick="toggleVoiceMode()" class="px-3 py-2 bg-blue-100 text-blue-700 rounded-lg text-sm font-semibold hover:bg-blue-200 transition-all">
+                            🎤 Голос
+                        </button>
+                    </div>
+                </div>
+                <div id="voiceModeIndicator" class="hidden mb-4 p-3 bg-green-100 border-l-4 border-green-500 rounded">
+                    <p class="text-sm text-green-800">
+                        <span id="voiceModeText">🔊 Режим: AI відповідає голосом</span>
+                    </p>
+                </div>
+                
+                <!-- Chat messages -->
+                <div id="chatMessages" class="space-y-4 mb-4 max-h-96 overflow-y-auto p-4 bg-gray-50 rounded-lg">
+                    <div class="bg-blue-100 p-4 rounded-lg">
+                        <p class="text-sm text-gray-600 mb-1">Духовний Наставник</p>
+                        <p>Мир вам! Я тут, щоб допомогти вам на вашому духовному шляху. Що вас хвилює сьогодні?</p>
+                    </div>
+                </div>
+
+                <!-- Input -->
+                <div class="flex gap-2">
+                    <div class="flex-1 relative">
+                        <textarea id="aiInput" rows="3" class="w-full p-3 pr-12 border-2 border-gray-300 rounded-lg focus:border-purple-500 focus:outline-none resize-none" placeholder="Ваше запитання або роздум..."></textarea>
+                        <button id="micButton" onclick="toggleVoiceInput()" class="absolute right-2 top-2 p-2 bg-purple-100 hover:bg-purple-200 rounded-lg transition-all">
+                            <span id="micIcon">🎤</span>
+                        </button>
+                    </div>
+                    <button onclick="sendToAI()" class="bg-purple-600 text-white px-6 rounded-lg font-semibold hover:bg-purple-700 transition-all">
+                        Надіслати
+                    </button>
+                </div>
+                
+                <div id="voiceStatus" class="hidden mt-2 text-center">
+                    <div class="inline-flex items-center gap-2 px-4 py-2 bg-red-100 text-red-700 rounded-lg">
+                        <span class="animate-pulse text-xl">🔴</span>
+                        <span class="font-semibold">Слухаю...</span>
+                    </div>
+                </div>
+                
+                <div id="aiLoading" class="hidden mt-4 text-center text-gray-600">
+                    <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-purple-600"></div>
+                    <p class="mt-2">Наставник роздумує...</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stats Tab -->
+        <div id="content-stats" class="tab-content hidden">
+            <div class="glass rounded-2xl shadow-2xl p-6 mb-4">
+                <h2 class="text-2xl font-bold text-gray-800 mb-6">📊 Статистика духовного зростання</h2>
+                
+                <!-- Summary cards -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                    <div class="bg-gradient-to-br from-green-400 to-green-600 p-6 rounded-xl text-white">
+                        <div class="text-3xl font-bold" id="totalGood">0</div>
+                        <div class="text-sm opacity-90">Добрих вчинків</div>
+                    </div>
+                    <div class="bg-gradient-to-br from-red-400 to-red-600 p-6 rounded-xl text-white">
+                        <div class="text-3xl font-bold" id="totalBad">0</div>
+                        <div class="text-sm opacity-90">Гріхів подолано</div>
+                    </div>
+                    <div class="bg-gradient-to-br from-blue-400 to-blue-600 p-6 rounded-xl text-white">
+                        <div class="text-3xl font-bold" id="totalPractices">0</div>
+                        <div class="text-sm opacity-90">Духовних практик</div>
+                    </div>
+                </div>
+
+                <!-- Chart -->
+                <div class="bg-white p-6 rounded-xl border-2 border-gray-200">
+                    <h3 class="font-bold text-gray-800 mb-4">Останні 7 днів</h3>
+                    <div id="weekChart" class="flex items-end justify-between gap-2 h-48">
+                        <!-- Chart will be rendered here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Spiritual practices frequency -->
+            <div class="glass rounded-2xl shadow-2xl p-6">
+                <h3 class="text-xl font-bold text-gray-800 mb-4">🙏 Частота духовних практик</h3>
+                <div id="practicesStats" class="space-y-3">
+                    <!-- Will be populated dynamically -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Wisdom Tab -->
+        <div id="content-wisdom" class="tab-content hidden">
+            <div class="glass rounded-2xl shadow-2xl p-6 mb-4">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">✨ Цитата дня</h2>
+                <div id="dailyQuote" class="bg-gradient-to-r from-amber-50 to-orange-50 p-6 rounded-xl border-l-4 border-orange-400">
+                    <p class="text-lg italic text-gray-700 mb-3"></p>
+                    <p class="text-right text-sm font-semibold text-gray-600"></p>
+                </div>
+                <button onclick="getNewQuote()" class="mt-4 w-full bg-orange-500 text-white py-2 rounded-lg hover:bg-orange-600 transition-all">
+                    Інша цитата
+                </button>
+            </div>
+
+            <!-- Collection of wisdom -->
+            <div class="glass rounded-2xl shadow-2xl p-6">
+                <h3 class="text-xl font-bold text-gray-800 mb-4">📚 Бібліотека мудрості</h3>
+                <div class="space-y-4" id="wisdomCollection">
+                    <!-- Wisdom items will be added here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Storage management
+        const storage = window.storage;
+        
+        // Voice interaction state
+        let voiceMode = 'text'; // 'text', 'input-only', 'full-voice'
+        let recognition = null;
+        let isSpeaking = false;
+        let speechSynthesis = window.speechSynthesis;
+        
+        // Initialize speech recognition
+        if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            recognition = new SpeechRecognition();
+            recognition.lang = 'uk-UA';
+            recognition.continuous = false;
+            recognition.interimResults = false;
+            
+            recognition.onresult = (event) => {
+                const transcript = event.results[0][0].transcript;
+                document.getElementById('aiInput').value = transcript;
+                document.getElementById('voiceStatus').classList.add('hidden');
+                document.getElementById('micIcon').textContent = '🎤';
+            };
+            
+            recognition.onerror = (event) => {
+                console.error('Speech recognition error:', event.error);
+                document.getElementById('voiceStatus').classList.add('hidden');
+                document.getElementById('micIcon').textContent = '🎤';
+                if (event.error === 'no-speech') {
+                    alert('Не вдалося розпізнати мовлення. Спробуйте ще раз.');
+                }
+            };
+            
+            recognition.onend = () => {
+                document.getElementById('voiceStatus').classList.add('hidden');
+                document.getElementById('micIcon').textContent = '🎤';
+            };
+        }
+        
+        // Toggle voice mode
+        function toggleVoiceMode() {
+            const modes = ['text', 'input-only', 'full-voice'];
+            const currentIndex = modes.indexOf(voiceMode);
+            voiceMode = modes[(currentIndex + 1) % modes.length];
+            
+            const indicator = document.getElementById('voiceModeIndicator');
+            const modeText = document.getElementById('voiceModeText');
+            const toggleBtn = document.getElementById('voiceToggle');
+            
+            if (voiceMode === 'text') {
+                indicator.classList.add('hidden');
+                toggleBtn.textContent = '🎤 Голос';
+                toggleBtn.className = 'px-3 py-2 bg-blue-100 text-blue-700 rounded-lg text-sm font-semibold hover:bg-blue-200 transition-all';
+            } else if (voiceMode === 'input-only') {
+                indicator.classList.remove('hidden');
+                indicator.className = 'mb-4 p-3 bg-blue-100 border-l-4 border-blue-500 rounded';
+                modeText.innerHTML = '🎤 Режим: Голосове введення (AI відповідає текстом)';
+                toggleBtn.textContent = '🎤 Голос: Введення';
+                toggleBtn.className = 'px-3 py-2 bg-blue-500 text-white rounded-lg text-sm font-semibold hover:bg-blue-600 transition-all';
+            } else {
+                indicator.classList.remove('hidden');
+                indicator.className = 'mb-4 p-3 bg-green-100 border-l-4 border-green-500 rounded';
+                modeText.innerHTML = '🔊 Режим: Повна розмова (AI відповідає голосом)';
+                toggleBtn.textContent = '🔊 Голос: Повний';
+                toggleBtn.className = 'px-3 py-2 bg-green-500 text-white rounded-lg text-sm font-semibold hover:bg-green-600 transition-all';
+            }
+        }
+        
+        // Toggle voice input
+        function toggleVoiceInput() {
+            if (!recognition) {
+                alert('Голосове введення не підтримується вашим браузером. Спробуйте Chrome або Safari.');
+                return;
+            }
+            
+            const voiceStatus = document.getElementById('voiceStatus');
+            const micIcon = document.getElementById('micIcon');
+            
+            if (voiceStatus.classList.contains('hidden')) {
+                // Start recording
+                voiceStatus.classList.remove('hidden');
+                micIcon.textContent = '⏹️';
+                try {
+                    recognition.start();
+                } catch (e) {
+                    console.error('Recognition start error:', e);
+                }
+            } else {
+                // Stop recording
+                voiceStatus.classList.add('hidden');
+                micIcon.textContent = '🎤';
+                recognition.stop();
+            }
+        }
+        
+        // Speak text
+        function speakText(text) {
+            return new Promise((resolve) => {
+                if (voiceMode !== 'full-voice') {
+                    resolve();
+                    return;
+                }
+                
+                // Cancel any ongoing speech
+                speechSynthesis.cancel();
+                
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'uk-UA';
+                utterance.rate = 0.9;
+                utterance.pitch = 1.0;
+                
+                // Try to find Ukrainian voice
+                const voices = speechSynthesis.getVoices();
+                const ukrainianVoice = voices.find(voice => voice.lang.startsWith('uk'));
+                if (ukrainianVoice) {
+                    utterance.voice = ukrainianVoice;
+                }
+                
+                utterance.onend = () => {
+                    isSpeaking = false;
+                    resolve();
+                };
+                
+                utterance.onerror = (e) => {
+                    console.error('Speech synthesis error:', e);
+                    isSpeaking = false;
+                    resolve();
+                };
+                
+                isSpeaking = true;
+                speechSynthesis.speak(utterance);
+            });
+        }
+        
+        // Stop speaking
+        function stopSpeaking() {
+            if (isSpeaking) {
+                speechSynthesis.cancel();
+                isSpeaking = false;
+            }
+        }
+        
+        // Initialize app
+        let currentData = {
+            entries: [],
+            stats: {
+                totalGood: 0,
+                totalBad: 0,
+                totalPractices: 0,
+                practicesCount: {}
+            },
+            chatHistory: []
+        };
+
+        // Orthodox quotes database
+        const orthodoxQuotes = [
+            {
+                text: "Молитва - це дихання душі. Як тіло без дихання мертве, так і душа без молитви мертва.",
+                author: "Св. Іоанн Кронштадтський"
+            },
+            {
+                text: "Не той побідив, хто здобув перемогу, а той, хто зберіг смирення після перемоги.",
+                author: "Св. Ефрем Сирін"
+            },
+            {
+                text: "Якщо маєш багато, давай щедро; якщо маєш мало, давай від щирого серця.",
+                author: "Св. Василій Великий"
+            },
+            {
+                text: "Стяжи дух мирний, і тисячі навколо тебе спасуться.",
+                author: "Прп. Серафим Саровський"
+            },
+            {
+                text: "Не судіть, і не будете судимі; прощайте, і прощені будете.",
+                author: "Євангеліє від Луки 6:37"
+            },
+            {
+                text: "Смирення - основа всіх чеснот. Без нього неможливо увійти в Царство Небесне.",
+                author: "Св. Іоанн Золотоустий"
+            },
+            {
+                text: "Гордість - початок усякого гріха. Смирення - початок усякої доброчесності.",
+                author: "Св. Йосип Волоцький"
+            },
+            {
+                text: "Найбільша мудрість - знати себе. Найбільше знання - пізнати Бога.",
+                author: "Св. Антоній Великий"
+            },
+            {
+                text: "Терпіння і молитва - два найсильніші воїни в духовній боротьбі.",
+                author: "Прп. Паїсій Святогорець"
+            },
+            {
+                text: "Любов до ближнього - дзеркало любові до Бога. Не можна любити Бога, не любивши брата свого.",
+                author: "Св. Максим Сповідник"
+            }
+        ];
+
+        // Load data from storage
+        async function loadData() {
+            try {
+                const entriesData = await storage.get('duhometr-entries');
+                const statsData = await storage.get('duhometr-stats');
+                const chatData = await storage.get('duhometr-chat');
+                
+                if (entriesData) currentData.entries = JSON.parse(entriesData.value);
+                if (statsData) currentData.stats = JSON.parse(statsData.value);
+                if (chatData) currentData.chatHistory = JSON.parse(chatData.value);
+                
+                updateUI();
+            } catch (error) {
+                console.log('First time user - initializing fresh data');
+            }
+        }
+
+        // Save data to storage
+        async function saveData() {
+            try {
+                await storage.set('duhometr-entries', JSON.stringify(currentData.entries));
+                await storage.set('duhometr-stats', JSON.stringify(currentData.stats));
+                await storage.set('duhometr-chat', JSON.stringify(currentData.chatHistory));
+            } catch (error) {
+                console.error('Error saving data:', error);
+            }
+        }
+
+        // Tab navigation
+        function showTab(tabName) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.add('hidden'));
+            document.querySelectorAll('[id^="tab-"]').forEach(btn => {
+                btn.classList.remove('bg-purple-600', 'text-white');
+                btn.classList.add('hover:bg-purple-100');
+            });
+            
+            // Show selected tab
+            document.getElementById('content-' + tabName).classList.remove('hidden');
+            document.getElementById('tab-' + tabName).classList.add('bg-purple-600', 'text-white');
+            document.getElementById('tab-' + tabName).classList.remove('hover:bg-purple-100');
+            
+            if (tabName === 'stats') updateStats();
+            if (tabName === 'wisdom') displayDailyQuote();
+        }
+
+        // Save journal entry
+        async function saveEntry() {
+            const goodDeeds = document.getElementById('goodDeeds').value;
+            const badDeeds = document.getElementById('badDeeds').value;
+            const reflection = document.getElementById('reflection').value;
+            
+            const practices = [];
+            document.querySelectorAll('.practice-checkbox:checked').forEach(cb => {
+                practices.push(cb.dataset.practice);
+            });
+
+            if (!goodDeeds && !badDeeds && !reflection && practices.length === 0) {
+                alert('Будь ласка, заповніть хоча б одне поле');
+                return;
+            }
+
+            const entry = {
+                date: new Date().toISOString(),
+                goodDeeds,
+                badDeeds,
+                practices,
+                reflection,
+                id: Date.now()
+            };
+
+            currentData.entries.unshift(entry);
+            
+            // Update stats
+            if (goodDeeds) currentData.stats.totalGood++;
+            if (badDeeds) currentData.stats.totalBad++;
+            currentData.stats.totalPractices += practices.length;
+            
+            practices.forEach(practice => {
+                currentData.stats.practicesCount[practice] = (currentData.stats.practicesCount[practice] || 0) + 1;
+            });
+
+            await saveData();
+            
+            // Clear form
+            document.getElementById('goodDeeds').value = '';
+            document.getElementById('badDeeds').value = '';
+            document.getElementById('reflection').value = '';
+            document.querySelectorAll('.practice-checkbox').forEach(cb => cb.checked = false);
+            
+            updateUI();
+            
+            // Get AI guidance
+            await getAIGuidance(entry);
+        }
+
+        // Spiritual guidance database
+        const guidanceRules = {
+            goodPractices: [
+                "Добре, що ви тримаєтеся молитовного правила. Як каже преподобний Серафим: 'Стяжи дух мирний, і тисячі навколо тебе спасуться.' Продовжуйте в тому ж дусі!",
+                "Радіємо вашому духовному поступу! Пам'ятайте слова святого Іоанна Золотоустого: 'Молитва - це світло душі.' Нехай Господь зміцнює вас!",
+                "Ваша постійність у молитві гідна похвали. Святий Єфрем Сирін навчає: 'Молитва без припинення - це велика сила.' Бог з вами!",
+                "Чудово, що ви не зупиняєтесь у духовній боротьбі. Як писав апостол Павло: 'Добрим подвигом я подвизався.' Хай Господь благословить ваші зусилля!"
+            ],
+            struggles: [
+                "Не впадайте у відчай через падіння. Святий Іоанн Ліствичник вчить: 'Не той праведник, хто не падає, а той, хто встає після падіння.' Покайтеся і рухайтеся далі.",
+                "Боротьба з гріхом - це ознака духовного життя. Преподобний Антоній Великий каже: 'Без спокус не буває перемоги.' Молітеся і не здавайтеся!",
+                "Пам'ятайте: 'Немає гріха, що переможе Боже милосердя' (св. Іоанн Кронштадтський). Каяття - це початок зцілення. Господь з вами!",
+                "Ваша чесність перед собою вже є великою чеснотою. Як каже Євангеліє: 'Блаженні плачучі, бо вони втішаться.' Продовжуйте боротьбу!"
+            ],
+            encouragement: [
+                "Кожен день - новий дар від Бога. Святий Василій Великий вчить: 'День минулий - не твій, майбутній - невідомий. Живи сьогоднішнім днем.'",
+                "Нехай слова преподобного Паїсія Святогорця надихають вас: 'Коли маємо добре помислення, тоді Бог нам допомагає.' Тримайтеся!",
+                "Пам'ятайте обітницю Христа: 'Я з вами по всі дні до скону віку.' Ви не самотні на цьому шляху. Мир вам!",
+                "Святий Макарій Єгипетський каже: 'Хто щодня очікує смерті, той щодня перемагає гріх.' Живіть усвідомлено!"
+            ],
+            prayer: [
+                "Молитва - це дихання душі. Продовжуйте молитовне правило навіть у сухості та холодності. Господь чує кожне слово.",
+                "Святий Ніл Синайський вчить: 'Хочеш молитися - вийди з тіла, забудь про думки.' Прагніть глибини в молитві.",
+                "Ісусова молитва - найдорогоцінніший дар. Як каже старець Софроній: 'Ім'я Ісуса має силу зцілювати душу.'",
+                "Не зупиняйтеся в молитві. Апостол Павло заповідає: 'Безпрестанно молітеся.' Це можливо серцем навіть у справах."
+            ],
+            fasting: [
+                "Піст - це не лише утримання від їжі, але й від гріха. Святий Василій: 'Істинний піст - відлучення від зла.'",
+                "Нехай ваш піст буде радісним! Євангеліє вчить: 'Коли постишся, помаж голову і умий лице твоє.' Це таємниця між вами і Богом.",
+                "Пам'ятайте слова Ісаака Сиріна: 'Без тілесного посту неможливо досягти духовного.' Ваші зусилля не марні!"
+            ],
+            general: [
+                "Духовне життя - це марафон, а не спринт. Тримайтеся постійності. Мир вам!",
+                "Нехай Господь благословить вас на цьому шляху. Пам'ятайте: Він завжди поруч, навіть коли здається, що далеко.",
+                "Продовжуйте боротьбу! Святі отці вчать: успіх у духовному житті - це постійність, а не досконалість."
+            ]
+        };
+
+        // Get spiritual guidance based on entry
+        async function getAIGuidance(entry) {
+            showTab('ai');
+            
+            let guidance = '';
+            const hasGood = entry.goodDeeds && entry.goodDeeds.trim();
+            const hasBad = entry.badDeeds && entry.badDeeds.trim();
+            const hasPractices = entry.practices && entry.practices.length > 0;
+            
+            // Determine appropriate guidance
+            if (hasPractices && entry.practices.length >= 3) {
+                guidance = guidanceRules.goodPractices[Math.floor(Math.random() * guidanceRules.goodPractices.length)];
+            } else if (hasBad && !hasGood) {
+                guidance = guidanceRules.struggles[Math.floor(Math.random() * guidanceRules.struggles.length)];
+            } else if (entry.practices.includes('Ранкова молитва') || entry.practices.includes('Вечірня молитва') || entry.practices.includes('Ісусова молитва')) {
+                guidance = guidanceRules.prayer[Math.floor(Math.random() * guidanceRules.prayer.length)];
+            } else if (entry.practices.includes('Піст')) {
+                guidance = guidanceRules.fasting[Math.floor(Math.random() * guidanceRules.fasting.length)];
+            } else if (hasGood) {
+                guidance = guidanceRules.encouragement[Math.floor(Math.random() * guidanceRules.encouragement.length)];
+            } else {
+                guidance = guidanceRules.general[Math.floor(Math.random() * guidanceRules.general.length)];
+            }
+            
+            // Add specific feedback
+            if (hasPractices) {
+                guidance += `\n\nВітаємо! Ви виконали сьогодні: ${entry.practices.join(', ')}. `;
+            }
+            
+            if (hasGood && hasBad) {
+                guidance += "Бачимо вашу щирість - ви визнаєте і добре, і погане. Це ознака справжнього духовного життя.";
+            }
+            
+            setTimeout(async () => {
+                addChatMessage('Духовний Наставник', guidance);
+                
+                // Speak response if in full-voice mode
+                if (voiceMode === 'full-voice') {
+                    await speakText(guidance);
+                }
+            }, 500);
+        }
+
+        // Spiritual Q&A database
+        const spiritualQA = {
+            'молитва': "Молитва - це серце духовного життя. Святий Іоанн Кронштадтський вчить: 'Молитва - це дихання душі.' Почніть з малого - ранкова і вечірня молитва за молитвословом. Додайте Ісусову молитву ('Господи Ісусе Христе, Сине Божий, помилуй мене грішного') протягом дня. Головне - постійність, навіть якщо відчуваєте сухість.",
+            'гріх': "Боротьба з гріхом - це довічний процес. Не впадайте у відчай! Святий Іоанн Ліствичник каже: 'Не той праведник, хто не падає, а той, хто встає після падіння.' Головне - покаяння і намагання виправитись. Йдіть до сповіді, молітеся, просіть у Бога сили. Кожен новий день - це нова можливість почати спочатку.",
+            'смирення': "Смирення - основа всіх чеснот. Святий Іоанн Золотоустий вчить: 'Без смирення неможливо увійти в Царство Небесне.' Смирення - це не принизливість, а правдиве бачення себе перед Богом. Це розуміння, що все добре в нас - від Бога, а все погане - від нас. Молітеся: 'Господи, даруй мені бачити гріхи мої.'",
+            'піст': "Піст - це не дієта, а духовний подвиг. Святий Василій Великий каже: 'Істинний піст - відлучення від зла.' Утримуйтеся не лише від певної їжі, але й від гніву, осуду, лінощів. Поєднуйте тілесний піст з молитвою і милосердям. Пам'ятайте: міра посту індивідуальна, радьтеся з духівником.",
+            'любов': "Любов - це суть християнства. 'Бог є любов' (1 Іоан 4:8). Але це не емоція, а дія. Святий Максим Сповідник вчить: 'Любов до ближнього - дзеркало любові до Бога.' Почніть з малого: привітність, прощення, допомога. Молітеся за тих, хто вас ображає. Це найважчий, але найкоротший шлях до Бога.",
+            'терпіння': "Терпіння - велика чеснота. Преподобний Паїсій Святогорець каже: 'Терпіння й молитва - два найсильніші воїни.' У випробуваннях зростає наша віра. Пам'ятайте слова Христа: 'Терпінням вашим спасайте душі ваші' (Лк 21:19). Кожна труднощість - це можливість наблизитися до Бога.",
+            'сумнів': "Сумніви - це природна частина духовного життя. Навіть великі святі проходили через темні ночі душі. Головне - не залишатися в сумніві. Читайте Євангеліє, спілкуйтеся з духівником, молітеся просто: 'Вірую, Господи! Допоможи моєму невір'ю!' (Мк 9:24). Бог цінує вашу чесність більше, ніж показну віру.",
+            'спокуса': "Спокуси - це нормально. Навіть Христос був спокушуваний у пустелі. Святий Антоній Великий вчить: 'Без спокус не буває перемоги.' Коли приходить спокуса: 1) Помоліться Ісусовою молитвою, 2) Згадайте про смерть і суд, 3) Відверніться від джерела спокуси, 4) Займіться чимось корисним. З часом стане легше.",
+            'радість': "Радість у Господі - це плід Духа Святого. Апостол Павло заповідає: 'Радійте завжди в Господі!' (Фил 4:4). Це не залежить від обставин, це глибокий мир у душі. Навіть у скорботах християнин може мати радість, бо знає: Бог керує всім і все веде до добра для тих, хто любить Його.",
+            'страх': "Святе Письмо каже: 'Досконала любов проганяє страх' (1 Іоан 4:18). Є два види страху: рабський (боятися покарання) і синівський (боятися образити Бога). Прагніть другого. Коли страшно - повторюйте: 'Бог з нами! Хто проти нас?' Довіртеся Господу, Він ніколи не залишає Своїх дітей."
+        };
+
+        // Common keywords for matching
+        const keywords = {
+            'молитва': ['молитв', 'молю', 'помол'],
+            'гріх': ['гріх', 'падінн', 'спокус', 'лукав'],
+            'смирення': ['смирен', 'гордо', 'гординя', 'марнослав'],
+            'піст': ['піст', 'постити'],
+            'любов': ['любов', 'любити', 'ненавид', 'ворог'],
+            'терпіння': ['терпінн', 'терпі', 'страждан', 'випробуван'],
+            'сумнів': ['сумнів', 'невір'],
+            'спокуса': ['спокус', 'боротьб'],
+            'радість': ['радість', 'радіюь', 'радіємо', 'сум', 'депрес'],
+            'страх': ['страх', 'бою', 'боять', 'тривож']
+        };
+
+        // Send message to wisdom system
+        function sendToAI() {
+            const input = document.getElementById('aiInput').value.trim();
+            if (!input) return;
+
+            addChatMessage('Ви', input);
+            document.getElementById('aiInput').value = '';
+            document.getElementById('aiLoading').classList.remove('hidden');
+
+            setTimeout(async () => {
+                const response = getWisdomResponse(input.toLowerCase());
+                addChatMessage('Духовний Наставник', response);
+                document.getElementById('aiLoading').classList.add('hidden');
+                
+                // Speak response if in full-voice mode
+                if (voiceMode === 'full-voice') {
+                    await speakText(response);
+                }
+            }, 800);
+        }
+
+        // Get wisdom response based on keywords
+        function getWisdomResponse(input) {
+            // Check for keyword matches
+            for (const [topic, keywordList] of Object.entries(keywords)) {
+                for (const keyword of keywordList) {
+                    if (input.includes(keyword)) {
+                        return spiritualQA[topic];
+                    }
+                }
+            }
+
+            // General responses if no match
+            const generalResponses = [
+                "Мир вам! Ваше запитання важливе. Пам'ятайте слова Христа: 'Просіть, і дасться вам; шукайте, і знайдете' (Мт 7:7). Молітеся, читайте Євангеліє, радьтеся з духівником. Господь обов'язково відкриє вам відповідь.",
+                "Дякую за вашу довіру. У духовних питаннях важливо мати особистого духівника, який знає вашу ситуацію. Але пам'ятайте: Бог завжди поруч. Молітеся просто і щиро, відкривайте Йому своє серце.",
+                "Ваше запитання потребує розсудливості. Святі отці вчать: 'Не роби нічого без поради.' Порадьтеся з досвідченим духівником. А поки що - молітеся і читайте Євангеліє. Відповідь прийде.",
+                "Бачу, що це вас хвилює. Святий Іоанн Кронштадтський каже: 'Віра без молитви мертва.' Моліться за це Богу, Він знає найкраще. І не забувайте про сповідь і причастя - джерела сили."
+            ];
+
+            return generalResponses[Math.floor(Math.random() * generalResponses.length)];
+        }
+
+        // Add chat message
+        function addChatMessage(sender, message) {
+            const chatMessages = document.getElementById('chatMessages');
+            const messageDiv = document.createElement('div');
+            const isUser = sender === 'Ви';
+            messageDiv.className = isUser ? 'bg-purple-100 p-4 rounded-lg ml-8 fade-in' : 'bg-blue-100 p-4 rounded-lg mr-8 fade-in';
+            
+            let speakerButton = '';
+            if (!isUser && voiceMode === 'full-voice') {
+                speakerButton = `<button onclick="speakText('${message.replace(/'/g, "\\'")}'); event.stopPropagation();" class="ml-2 text-lg hover:scale-110 transition-transform">🔊</button>`;
+            }
+            
+            messageDiv.innerHTML = `
+                <p class="text-sm text-gray-600 mb-1 flex items-center justify-between">
+                    <span>${sender}</span>
+                    ${speakerButton}
+                </p>
+                <p class="whitespace-pre-wrap">${message}</p>
+            `;
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        // Update UI
+        function updateUI() {
+            // Update date and day counter
+            const today = new Date();
+            document.getElementById('currentDate').textContent = today.toLocaleDateString('uk-UA', { 
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+            });
+            document.getElementById('dayCounter').textContent = `День ${currentData.entries.length + 1}`;
+
+            // Update entries history
+            const entriesHistory = document.getElementById('entriesHistory');
+            if (currentData.entries.length === 0) {
+                entriesHistory.innerHTML = '<p class="text-gray-500 text-center py-8">Поки що немає записів</p>';
+            } else {
+                entriesHistory.innerHTML = currentData.entries.slice(0, 10).map(entry => {
+                    const date = new Date(entry.date);
+                    return `
+                        <div class="border-2 border-gray-200 p-4 rounded-lg hover:shadow-md transition-shadow fade-in">
+                            <div class="flex justify-between items-start mb-2">
+                                <span class="text-sm font-semibold text-gray-600">
+                                    ${date.toLocaleDateString('uk-UA')} ${date.toLocaleTimeString('uk-UA', { hour: '2-digit', minute: '2-digit' })}
+                                </span>
+                                ${entry.practices.length > 0 ? `<span class="text-xs bg-blue-100 px-2 py-1 rounded">${entry.practices.length} практик</span>` : ''}
+                            </div>
+                            ${entry.goodDeeds ? `<p class="text-sm text-green-700 mb-1">✅ ${entry.goodDeeds}</p>` : ''}
+                            ${entry.badDeeds ? `<p class="text-sm text-red-700 mb-1">❌ ${entry.badDeeds}</p>` : ''}
+                            ${entry.reflection ? `<p class="text-sm text-purple-700 italic">💭 ${entry.reflection}</p>` : ''}
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            // Update chat
+            const chatMessages = document.getElementById('chatMessages');
+            chatMessages.innerHTML = `
+                <div class="bg-blue-100 p-4 rounded-lg">
+                    <p class="text-sm text-gray-600 mb-1">Духовний Наставник</p>
+                    <p>Мир вам! Я тут, щоб допомогти вам на вашому духовному шляху. Що вас хвилює сьогодні?</p>
+                </div>
+            `;
+            
+            currentData.chatHistory.forEach(msg => {
+                addChatMessage(msg.role === 'user' ? 'Ви' : 'Духовний Наставник', msg.content);
+            });
+        }
+
+        // Update statistics
+        function updateStats() {
+            document.getElementById('totalGood').textContent = currentData.stats.totalGood;
+            document.getElementById('totalBad').textContent = currentData.stats.totalBad;
+            document.getElementById('totalPractices').textContent = currentData.stats.totalPractices;
+
+            // Update week chart
+            const weekChart = document.getElementById('weekChart');
+            const last7Days = currentData.entries.slice(0, 7).reverse();
+            
+            if (last7Days.length === 0) {
+                weekChart.innerHTML = '<p class="text-gray-500 text-center w-full">Недостатньо даних для графіка</p>';
+                return;
+            }
+
+            const maxValue = Math.max(...last7Days.map(e => (e.practices?.length || 0) + (e.goodDeeds ? 1 : 0)), 1);
+            
+            weekChart.innerHTML = last7Days.map(entry => {
+                const date = new Date(entry.date);
+                const value = (entry.practices?.length || 0) + (entry.goodDeeds ? 1 : 0);
+                const height = (value / maxValue) * 100;
+                
+                return `
+                    <div class="flex-1 flex flex-col items-center">
+                        <div class="w-full bg-gradient-to-t from-purple-600 to-blue-500 rounded-t chart-bar" style="height: ${height}%"></div>
+                        <div class="text-xs mt-2 text-gray-600">${date.getDate()}/${date.getMonth() + 1}</div>
+                        <div class="text-xs font-bold text-purple-600">${value}</div>
+                    </div>
+                `;
+            }).join('');
+
+            // Update practices stats
+            const practicesStats = document.getElementById('practicesStats');
+            const practicesArray = Object.entries(currentData.stats.practicesCount).sort((a, b) => b[1] - a[1]);
+            
+            if (practicesArray.length === 0) {
+                practicesStats.innerHTML = '<p class="text-gray-500 text-center py-4">Поки що немає даних про практики</p>';
+            } else {
+                const maxPracticeCount = practicesArray[0][1];
+                practicesStats.innerHTML = practicesArray.map(([practice, count]) => {
+                    const percentage = (count / maxPracticeCount) * 100;
+                    return `
+                        <div class="fade-in">
+                            <div class="flex justify-between mb-1">
+                                <span class="text-sm font-medium text-gray-700">${practice}</span>
+                                <span class="text-sm font-bold text-purple-600">${count}</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-3">
+                                <div class="bg-gradient-to-r from-purple-500 to-blue-500 h-3 rounded-full transition-all" style="width: ${percentage}%"></div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            }
+        }
+
+        // Display daily quote
+        function displayDailyQuote() {
+            const today = new Date().toDateString();
+            const savedQuote = localStorage.getItem('dailyQuote');
+            const savedDate = localStorage.getItem('dailyQuoteDate');
+            
+            let quote;
+            if (savedDate === today && savedQuote) {
+                quote = JSON.parse(savedQuote);
+            } else {
+                quote = orthodoxQuotes[Math.floor(Math.random() * orthodoxQuotes.length)];
+                localStorage.setItem('dailyQuote', JSON.stringify(quote));
+                localStorage.setItem('dailyQuoteDate', today);
+            }
+            
+            const quoteEl = document.getElementById('dailyQuote');
+            quoteEl.querySelector('p:first-child').textContent = `"${quote.text}"`;
+            quoteEl.querySelector('p:last-child').textContent = `— ${quote.author}`;
+        }
+
+        // Get new quote
+        function getNewQuote() {
+            const quote = orthodoxQuotes[Math.floor(Math.random() * orthodoxQuotes.length)];
+            const quoteEl = document.getElementById('dailyQuote');
+            quoteEl.querySelector('p:first-child').textContent = `"${quote.text}"`;
+            quoteEl.querySelector('p:last-child').textContent = `— ${quote.author}`;
+        }
+
+        // Initialize app on load
+        window.addEventListener('load', () => {
+            loadData();
+            displayDailyQuote();
+            
+            // Load voices for speech synthesis
+            if (speechSynthesis) {
+                speechSynthesis.getVoices();
+                // Some browsers require waiting for voices to load
+                if (speechSynthesis.onvoiceschanged !== undefined) {
+                    speechSynthesis.onvoiceschanged = () => {
+                        speechSynthesis.getVoices();
+                    };
+                }
+            }
+        });
+
+        // Allow Enter key to send AI messages
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('aiInput').addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    sendToAI();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
