@@ -1,5 +1,6 @@
 # ☦️ Духометр
 
+
 **Православний духовний щоденник з AI-наставником та голосовою взаємодією**
 
 ![Духометр](https://img.shields.io/badge/Версія-1.0-purple) ![Ліцензія](https://img.shields.io/badge/Ліцензія-MIT-green) ![Мова](https://img.shields.io/badge/Мова-Українська-blue)
