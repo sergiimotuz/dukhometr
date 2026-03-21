@@ -518,11 +518,14 @@
             recognition.interimResults = false;
             
             recognition.onresult = (event) => {
-                const transcript = event.results[0][0].transcript;
-                document.getElementById('aiInput').value = transcript;
-                document.getElementById('voiceStatus').classList.add('hidden');
-                document.getElementById('micIcon').textContent = '🎤';
-            };
+    const transcript = event.results[0][0].transcript;
+    document.getElementById('aiInput').value = transcript;
+    document.getElementById('voiceStatus').classList.add('hidden');
+    const bigMicIcon = document.getElementById('bigMicIcon');
+    const bigMicText = document.getElementById('bigMicText');
+    if (bigMicIcon) bigMicIcon.textContent = '🎤';
+    if (bigMicText) bigMicText.textContent = 'НАТИСНІТЬ щоб почати говорити';
+};
             
             recognition.onerror = (event) => {
                 console.error('Speech recognition error:', event.error);
