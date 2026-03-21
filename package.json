@@ -1,0 +1,9 @@
+{
+  "name": "duhometr-api",
+  "version": "1.0.0",
+  "description": "API backend for Duhometr spiritual guidance app",
+  "type": "module",
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.32.1"
+  }
+}
